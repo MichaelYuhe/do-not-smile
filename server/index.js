@@ -1,29 +1,36 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
-import { ExpressPeerServer } from "peer";
+import { PeerServer } from "peer";
 import http from "http";
 
 const app = new Hono();
 const server = http.createServer();
 
-const peerServer = ExpressPeerServer(server, {
-  debug: true,
+const peerServer = PeerServer({
+  port: 9000,
   path: "/myapp",
 });
 
-app.use("/peerjs", peerServer);
+peerServer.on("connection", (client) => {
+  console.log(`Client connected: ${client.id}`);
+});
+
+peerServer.on("disconnect", (client) => {
+  console.log(`Client disconnected: ${client.id}`);
+});
 
 app.get("/", (c) => {
   return c.text("P2P Video Chat Server is running");
 });
 
 app.get("/new-user", (c) => {
-  const userId = Math.random().toString(36);
+  const userId = Math.random().toString(36).substr(2, 9);
   return c.json({ userId });
 });
 
-const port = 3000 || process.env.PORT;
-console.log(`Server is running on port ${port}`);
+const port = 3000;
+console.log(`Hono Server is running on port ${port}`);
+console.log(`PeerJS Server is running on port 9000`);
 
 serve({
   fetch: app.fetch,
