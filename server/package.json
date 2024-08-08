@@ -1,0 +1,19 @@
+{
+  "name": "hono-peerjs-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "P2P Video Chat Backend using Hono and PeerJS",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "hono": "^3.0.0",
+    "@hono/node-server": "^1.0.0",
+    "peer": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
